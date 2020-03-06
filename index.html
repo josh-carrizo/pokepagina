@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>151 Pokemons</title>
+</head>
+<body>
+    <div class="row container">
+        <div class="col-8">
+            <div class="row pkmn">
+
+            </div>
+        </div>
+        <div class="info-pkmn col-4">
+        </div>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="pokemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="name_pokemon"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <div >
+                        <img  id="pokeimagen" src="${imagen_pokemon}">
+                    </div>
+                    <h6>"Altura"</h6>
+                    <div id="altura_pokemon"></div>
+                    <h6>"Peso"</h6>
+                    <div id="peso_pokemon"></div>
+                    <p>Tipos</p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="    crossorigin="anonymous"></script>    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        var link="http://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/";
+        //raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/"num".png"
+        $(document).ready(function(){
+                 for(i=1;i<152;++i){
+                    var n_pokemon= link + [i]+".png";
+                    var pokemon =  `<div class="col-3">
+                                        <img  data-pokemon=${i} src = `+ n_pokemon +`>
+                                    </div>`;
+                $('.pkmn').append(pokemon);
+                }
+
+        $(document).on('click','img', function(){
+            var pokemon_id =$(this).attr('data-pokemon');
+                $.get(
+                    `http://pokeapi.co/api/v2/pokemon/${pokemon_id}/`,
+                    function(pokemon){
+                        debugger;
+                        var nombre_pokemon= pokemon.name;
+                        var imagen_pokemon= `http://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${pokemon_id}.png`;
+                        var height_pokemon= pokemon.height;
+                        var weight_pokemon= pokemon.weight;
+                        var info_pokemon= `
+                        
+                            <h1>${nombre_pokemon}</h1>
+                            <img src="${imagen_pokemon}">
+                            <h6>"Altura"</h6>
+                            <div>${height_pokemon}</div>
+                            <h6>"Peso"</h6>
+                            <div>${weight_pokemon}</div>
+                            <p>Tipos</p>
+                            <ul>
+                        `;
+                        for(i=0;i<pokemon.types.length;i++){
+                            info_pokemon += `<li>
+                            ${pokemon.types[i].type.name}</li>`
+                        }
+                        info_pokemon += '</ul>';
+
+                        $('.info-pkmn').html(info_pokemon);
+                        $('#name_pokemon').html(nombre_pokemon);
+                        $('#pokeimagen').html(imagen_pokemon);
+                        $('#altura_pokemon').html(height_pokemon);
+                        $('#peso_pokemon').html(weight_pokemon);
+
+                        $('#pokemodal').modal();
+                        }
+                    )
+                    }
+        )   
+        });
+
+     /*   $.ajax({
+            url:"http://pokeapi.co/api/v2/pokemon/1/",
+            method : "get",
+            success :function(data){
+                console.log(data);
+            }
+        }); */
+
+        $.get(
+            "http://pokeapi.co/api/v2/pokemon/1/",
+            function(pokemon){
+                console.log(pokemon);
+            }
+        )
+    
+    </script>
+    
+</body>
+</html>
