@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>151 Pokemons</title>
+    <style>
+        .info-pkmn{
+            
+            background:  url( https://k43.kn3.net/taringa/9/9/7/1/4/2/8/roger_18/EB5.gif?6134) no-repeat;
+            background-size:100%;
+        }
+    </style>
 </head>
 <body>
     <div class="row container">
@@ -20,25 +27,9 @@
         <div class="modal fade" id="pokemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="name_pokemon"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <div class="modal-body info-pkmn">
                 </div>
-                <div class="modal-body">
-                    <div >
-                        <img  id="pokeimagen" src="${imagen_pokemon}">
-                    </div>
-                    <h6>"Altura"</h6>
-                    <div id="altura_pokemon"></div>
-                    <h6>"Peso"</h6>
-                    <div id="peso_pokemon"></div>
-                    <p>Tipos</p>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                </div>
+                <button type="button" class="btn lg btn-danger" data-dismiss="modal">Cerrar</button>
             </div>
             </div>
         </div>
@@ -64,24 +55,24 @@
                 $.get(
                     `http://pokeapi.co/api/v2/pokemon/${pokemon_id}/`,
                     function(pokemon){
-                        debugger;
+                        
                         var nombre_pokemon= pokemon.name;
-                        var imagen_pokemon= `http://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${pokemon_id}.png`;
+                        var imagen_pokemon= `<img class="mx-auto d-block col-6" src="http://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${pokemon_id}.png">`;
                         var height_pokemon= pokemon.height;
                         var weight_pokemon= pokemon.weight;
                         var info_pokemon= `
                         
-                            <h1>${nombre_pokemon}</h1>
-                            <img src="${imagen_pokemon}">
-                            <h6>"Altura"</h6>
-                            <div>${height_pokemon}</div>
-                            <h6>"Peso"</h6>
-                            <div>${weight_pokemon}</div>
-                            <p>Tipos</p>
+                            <h1 class="text-capitalize text-center">${nombre_pokemon}</h1>
+                            ${imagen_pokemon}
+                            <h5>Altura:</h5>
+                            <div><ul><li>${height_pokemon}</li></ul></div>
+                            <h5>Peso:</h5>
+                            <div><ul><li>${weight_pokemon}</li></ul></div>
+                            <h5>Tipo(s):</h5>
                             <ul>
                         `;
                         for(i=0;i<pokemon.types.length;i++){
-                            info_pokemon += `<li>
+                            info_pokemon += `<li class="text-capitalize">
                             ${pokemon.types[i].type.name}</li>`
                         }
                         info_pokemon += '</ul>';
